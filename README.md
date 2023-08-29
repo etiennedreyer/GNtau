@@ -1,1 +1,113 @@
-# GNtau
+# **GNTau Workflow**
+
+## General Steps:
+1. Entering the cluster (example: ssh zivka@192.114.102.138)
+2. source /usr/local/anaconda/3.8u/etc/profile.d/conda.sh 
+
+
+## Preparing the samples
+* root --> h5 In this step we would like to converte the filse from root to h5 format.
+1. converter - python converter.py -c config.yaml
+*the output file format will be output_JZ_?_.h5 - notice point b!
+converter.py path - /storage/agrp/zivka/TauGN1/tau_sampels/converter.py
+config.ymal path - /storage/agrp/zivka/TauGN1/tau_sampels/config.yaml
+
+*Things you might need to modify:*
+a. the path of the different jetjet samples folders
+b. the output file name (for each JZ slice) 
+** tautau samples are ready (R22 - after all stages), and can be found here: /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/ntuples/tau
+
+
+2. merging - python merge_ds.py -c merging.yaml
+merge_ds.py path - /storage/agrp/zivka/TauGN1/tau_sampels/merge/merge_ds.py
+merging.yaml path - /storage/agrp/zivka/TauGN1/tau_sampels/merge/merging.yaml
+
+*Things you might need to modify:*
+a. output file name, in merging.yaml at the top of the page
+b. total_size: 40e6 
+c. fraction of each JZ slice - notice that you might need to change the path of the JZ slices in this file
+
+3. labeling - python label.py 
+label.py - /storage/agrp/zivka/TauGN1/tau_sampels/label.py 
+*things you might need to modify:*
+a. line 173: datasets, you can choose between jet/tau samples (if you created new tau samples you will need to do this stage twice and change the dataset)
+b. line 182: for tau samples, you can also modify total_jets number.
+
+
+Congrats! now you have ready to go ntuples 
+
+## UPP - preprocessing 
+
+You can use the UPP tutorial: https://github.com/umami-hep/umami-preprocessing
+Things that are not written and important to mention:
+a. notice that you activate UPP
+b. you should have a ntuples folder that should be seperated as follows:
+ntuples
+    qcd - contains jetjet samples after labeling 
+    tau - containing tautau samples after labeling 
+c. to create all train, val, and test files together you should run the following: 
+preprocess --config configs/tau.yaml --split all
+
+
+Congrats! now you are ready to train
+
+## Training 
+
+training is done by salt, the tutorial can be found in this folder under tutorial-salt
+
+*Do only once - Replace your predictionwriter.py with this file /storage/agrp/dmitrykl/salt/run/tau/predictionwriter.py*
+
+1. You might need to run all or some of the following, you will see it the the tutorial :
+    screen - or submit a job
+    conda activate salt - !!
+    python -m pip install -e .
+2. Go to the run directory and launch: salt fit -c GN2TauA.yaml --force
+*A* stands for all, you can modify the config file as you wish.
+GN2TauA.yaml path - /storage/agrp/zivka/salt/run/tau/GN2TauA.yaml
+GNTau.ymal path - /storage/agrp/zivka/salt/run/tau/GN2Tau.yaml
+GNTauJ.ymal path - /storage/agrp/zivka/salt/run/tau/GN2TauJ.yaml
+GNTauC.ymal path - /storage/agrp/zivka/salt/run/tau/GN2TauC.yaml
+
+*Things you might need to modify:*
+a. train, val, test, norm_dict, class_dict paths - to the output files of UPP
+b. write_tracks: True - this determines if we will have the output of the aux task or not (the tracks GNTau prediction)
+c. variables that we want to train on: 
+    * Comment the variables
+    * Modify the numbers as necessary, if you change track variables for example you should change line 141, input_size: 51, to the total number of jets and the new track variables.
+d. number of epochs, according to Dmitrii for the latest training we overfitted, 20 epochs should have been enough.
+
+
+Congrats! now you have a trained model
+
+## Evaluation
+
+The evaluation part is also done by salt, you should run the following: 
+salt test --config logs/GN2Tau_20230726-T175600/config.yaml --data.test_file /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/output/pp_output_test.h5
+
+when the config file will be found in the folder of the training output under logs
+data.test_file file will be the path path of the test_file that was used during training,(UPP output) 
+
+## Output Plots
+
+1. ROC and the eff/rej plots
+You should copy the notebook to your directory and play with the parameters:
+/storage/agrp/zivka/salt/run/tau/clean_plot_tau_ziv.ipynb
+
+this is the old one, it contains more things that are not really needed to create the ROC plots, but if necessary you can also take a look into this one:
+/storage/agrp/zivka/salt/run/tau/plot_tau_ziv.ipynb
+
+*Things you might need to modify:*
+a. test_file should be the exact file you evaluated on 
+b. modify the networks at the top of the notebook
+c. at the last part of the eff/rej plots, you can modify the network, now it checks only RNN 
+
+2. CM
+a. RNN - /storage/agrp/zivka/salt/run/tau/confusion_matrix.ipynb
+b. GNTau - /storage/agrp/zivka/salt/run/tau/confusion_matrix_NOT_RNN.ipynb
+   * if we have the output of the aux task
+
+3. JZ slices 
+/storage/agrp/zivka/salt/run/tau/exploration.ipynb - you should use only the last part 
+
+4. Variables Plots
+If you wish to plot variable distributions you can take a look in this notebook and modify as necessary: /storage/agrp/zivka/salt/run/tau/compare_ntuples.ipynb
