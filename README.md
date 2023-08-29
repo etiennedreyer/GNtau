@@ -48,7 +48,7 @@ label.py - /storage/agrp/zivka/TauGN1/tau_sampels/label.py
 
 Things you might need to modify:
 1. line 173: datasets, you can choose between jet/tau samples.
-* (if you created new tau samples you will need to do this stage twice and change the dataset)
+   * (if you created new tau samples you will need to do this stage twice and change the dataset)
 2. line 182: for tau samples, you can also modify total_jets number.
 
 
@@ -101,7 +101,7 @@ Things you might need to modify:
 2. write_tracks: True - this determines if we will have the output of the aux task or not (the tracks GNTau prediction)
 3. variables that we want to train on:
     * Comment the variables
-    * Modify the numbers as necessary, if you change track variables for example you should change line 141, input_size: 51, to the total number of jets and the new track variables.
+    * Modify the numbers as necessary, for example if you want to change the track variables, you should change line 141, input_size: 51, to the total number of jets and the new track variables.
 4. number of epochs, according to Dmitrii for the latest training we overfitted, 20 epochs should have been enough.
 
 
