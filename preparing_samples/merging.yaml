@@ -1,0 +1,53 @@
+output_filename: test_35M
+total_size: 40e6
+tracks_name: tracks
+cells_name: cells
+
+# JZ1W: 2.6%
+# JZ2W: 11.26%
+# JZ3W: 18.72%
+# JZ4W: 26.18%
+# JZ5W: 22.35%
+# JZ6W: 4.25%
+# JZ7W: 5.23%
+# JZ8W: 5.08%
+# JZ9W: 2.45%
+# JZ(10-12)W: 0.6% 
+
+samples:
+  JZ1W:
+    fraction: 0.03
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ1.h5
+  JZ2W:
+    fraction: 0.11
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ2.h5
+  JZ3W:
+    fraction: 0.19
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ3.h5
+  JZ4W:
+    fraction: 0.26
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ4.h5
+  JZ5W:
+    fraction: 0.03
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ5.h5
+  JZ6W:
+    fraction: 0.12
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ6.h5
+  JZ7W:
+    fraction: 0.12
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ7.h5
+  JZ8W:
+    fraction: 0.14
+    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ8.h5
+  # VHbb:
+  #   fraction: 0.25
+  #   file_path: /storage/agrp/dmitrykl/xbb/umami/ftag_xbb/merging/user.dkobylia.801471.e8441_s3681_r13144_p5488.tdd.FatJets.22_2_100.23-01-12_test-xbb_output.h5/
+  # Vhcc:
+  #   fraction: 0.25
+  #   file_path: /storage/agrp/dmitrykl/xbb/umami/ftag_xbb/merging/user.dkobylia.801472.e8441_s3681_r13144_p5488.tdd.FatJets.22_2_100.23-01-12_test-xbb_output.h5/
+  # QCD:
+  #   fraction: 0.25
+  #   file_path: /storage/agrp/dmitrykl/xbb/umami/ftag_xbb/merging/user.dkobylia.364704.e7142_s3681_r13144_p5488.tdd.FatJets.22_2_100.23-01-12_test-xbb_output.h5/
+  # Top:
+  #   fraction: 0.25
+  #   file_path: /storage/agrp/dmitrykl/xbb/umami/ftag_xbb/merging/user.dkobylia.426345.e6880_s3681_r13144_p5488.tdd.FatJets.22_2_100.23-01-12_test-xbb_output.h5/

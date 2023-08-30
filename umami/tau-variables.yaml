@@ -1,0 +1,85 @@
+jets:
+  inputs:
+    - absEta
+    - pt
+    - TAU_centFrac
+    - TAU_sumEMCellEtOverLeadTrkPt
+    - TAU_dRmax
+    - TAU_trFlightPathSig
+    - TAU_etOverPtLeadTrk
+    - TAU_ptRatioEflowApprox
+    - TAU_mEflowApprox
+    - TAU_massTrkSys
+    - TAU_SumPtTrkFrac
+    - TAU_EMPOverTrkSysP
+    - TAU_isolFrac
+  labels:
+    - HadronConeExclTruthLabelID
+
+tracks:
+  inputs:
+    - trackPt
+    - trackEta
+    - trackPhi
+    - numberOfInnermostPixelLayerHits
+    - numberOfPixelHits
+    - numberOfPixelSharedHits
+    - numberOfPixelDeadSensors
+    - numberOfSCTHits
+    - numberOfSCTSharedHits
+    - numberOfSCTDeadSensors
+    - numberOfTRTHighThresholdHits
+    - numberOfTRTHits
+    - nPixHits
+    - nSCTHits
+    - nSiHits
+    - nIBLHitsAndExp
+    - expectInnermostPixelLayerHit
+    - expectNextToInnermostPixelLayerHit
+    - numberOfContribPixelLayers
+    - numberOfPixelHoles
+    - d0_old
+    - qOverP
+    - theta
+    - z0sinthetaSigTJVA
+    - z0sinthetaTJVA
+    - d0SigTJVA
+    - d0TJVA
+    - z0TJVA
+    - dz0_TV_PV0
+    - log_sumpt_TV
+    - log_sumpt2_TV
+    - log_sumpt_PV0
+    - log_sumpt2_PV0
+    - rConv
+    - rConvII
+    - charge
+    - "rnn_chargedScore"
+    - "rnn_isolationScore"
+    - "rnn_conversionScore"
+    - "rnn_fakeScore"
+  labels:
+    - tauTruthProng
+    - tauTruthDecayMode
+    - NewTruthType
+
+cells:
+  inputs:
+    - TAU_cls_e
+    - TAU_cls_et
+    - TAU_cls_dPhi
+    - TAU_cls_dEta
+    - TAU_cls_SECOND_R
+    - TAU_cls_SECOND_LAMBDA
+    - TAU_cls_FIRST_ENG_DENS
+    - TAU_cls_EM_PROBABILITY
+    - TAU_cls_CENTER_MAG
+    - TAU_cls_CENTER_LAMBDA
+  # labels:
+  #   - HadronConeExclTruthLabelID
+#flow:
+#  inputs:
+#    - pt
+#    - energy
+#    - deta
+#    - dphi

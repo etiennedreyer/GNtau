@@ -1,0 +1,64 @@
+seed_everything: 42
+
+data:
+  train_file: /storage/agrp/dmitrykl/tauTag/umami/PFlow-hybrid-resampled_scaled_shuffled.h5
+  val_file: /storage/agrp/dmitrykl/tauTag/umami/PFlow-hybrid-validation-resampled_scaled_shuffled.h5
+  test_file: /storage/agrp/dmitrykl/tauTag/umami/hybrids/inclusive_testing_ttbar_PFlow.h5
+  scale_dict: /storage/agrp/dmitrykl/tauTag/umami/scale_dicts/PFlow-scale_dict-22M.json
+  #move_files_temp: null
+  inputs:
+    jet: jets
+    track: tracks
+  batched_read: True
+  batch_size: 1000
+  num_workers: 10
+  num_jets_train: -1
+  num_jets_val: -1
+  num_jets_test: -1
+
+trainer:
+  max_epochs: 50
+  accelerator: gpu
+  devices: 1
+  #precision: bf16
+  strategy: ddp
+  log_every_n_steps: 50
+  default_root_dir: logs
+
+  logger:
+    class_path: lightning.pytorch.loggers.CometLogger
+    init_args:
+      project_name: salt
+      display_summary_level: 0
+
+  callbacks:
+    - class_path: salt.callbacks.Checkpoint
+      init_args:
+        monitor_loss: val_jet_classification_loss
+    - class_path: salt.callbacks.PredictionWriter
+      init_args:
+        write_tracks: False
+        jet_variables:
+          - pt
+          - eta
+          - HadronConeExclTruthLabelID
+          - n_truth_promptLepton
+        track_variables:
+          - truthOriginLabel
+          - truthVertexIndex
+          - valid
+    - class_path: lightning.pytorch.callbacks.LearningRateMonitor
+    - class_path: lightning.pytorch.callbacks.TQDMProgressBar
+      init_args:
+        refresh_rate: 50
+    - class_path: lightning.pytorch.callbacks.ModelSummary
+      init_args:
+        max_depth: 2
+
+# configure learning rate
+model:
+  lrs_config:
+    initial: 1e-7
+    max: 5e-4
+    end: 1e-7
+    pct_start: 0.1

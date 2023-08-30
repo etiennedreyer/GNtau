@@ -1,0 +1,231 @@
+name: GN2TauC
+
+data:
+  train_file: /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/output/pp_output_train.h5
+  val_file: /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/output/pp_output_val.h5
+  class_dict: /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/output/class_dict.yaml
+  norm_dict: /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/output/norm_dict.yaml
+  test_file: /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/output/pp_output_test.h5
+  #move_files_temp: null
+  inputs:
+    jet: jets
+    track: tracks
+    cell: cells
+  batch_size: 1000
+  num_workers: 10
+  num_jets_train: -1
+  num_jets_val: -1
+  num_jets_test: -1
+  variables:
+    jet:
+      - absEta
+      - pt
+    track:
+      - "trackPt"
+      - "trackEta"
+      - "trackPhi"
+      - "numberOfInnermostPixelLayerHits"
+      - "numberOfPixelHits"
+      - "numberOfPixelSharedHits"
+      - "numberOfPixelDeadSensors"
+      - "numberOfSCTHits"
+      - "numberOfSCTSharedHits"
+      - "numberOfSCTDeadSensors"
+      - "numberOfTRTHighThresholdHits"
+      - "numberOfTRTHits"
+      - "nPixHits"
+      - "nSCTHits"
+      - "nSiHits"
+      - "nIBLHitsAndExp"
+      - "expectInnermostPixelLayerHit"
+      - "expectNextToInnermostPixelLayerHit"
+      - "numberOfContribPixelLayers"
+      - "numberOfPixelHoles"
+      - "d0_old"
+      - "qOverP"
+      - "theta"
+      - "z0sinthetaSigTJVA"
+      - "z0sinthetaTJVA"
+      - "d0SigTJVA"
+      - "d0TJVA"
+      - "z0TJVA"
+      - "dz0_TV_PV0"
+      - "log_sumpt_TV"
+      - "log_sumpt2_TV"
+      - "log_sumpt_PV0"
+      - "log_sumpt2_PV0"
+        #    - "rConv"
+        #    - "rConvII"
+      - "charge"
+      - "rnn_chargedScore"
+      - "rnn_isolationScore"
+      - "rnn_conversionScore"
+      - "rnn_fakeScore"
+    cell:
+      - TAU_cls_e
+      - TAU_cls_et
+      - TAU_cls_dPhi
+      - TAU_cls_dEta
+      - TAU_cls_SECOND_R
+      - TAU_cls_SECOND_LAMBDA
+      - TAU_cls_FIRST_ENG_DENS
+      - TAU_cls_EM_PROBABILITY
+      - TAU_cls_CENTER_MAG
+      - TAU_cls_CENTER_LAMBDA
+
+trainer:
+  max_epochs: 50
+  accelerator: gpu
+  devices: 1
+  #precision: bf16
+  strategy: ddp
+  log_every_n_steps: 50
+  default_root_dir: logs
+
+  logger:
+    class_path: lightning.pytorch.loggers.CometLogger
+    init_args:
+      project_name: salt
+      display_summary_level: 0
+
+  callbacks:
+    - class_path: salt.callbacks.Checkpoint
+      init_args:
+        monitor_loss: val_jet_classification_loss
+    - class_path: salt.callbacks.PredictionWriter
+      init_args:
+        write_tracks: False
+        jet_variables:
+          - pt
+          - absEta
+          - HadronConeExclTruthLabelID
+        track_variables:
+          - NewTruthType
+    - class_path: lightning.pytorch.callbacks.LearningRateMonitor
+    - class_path: lightning.pytorch.callbacks.TQDMProgressBar
+      init_args:
+        refresh_rate: 20
+    - class_path: lightning.pytorch.callbacks.ModelSummary
+      init_args:
+        max_depth: 2
+
+model:
+  lrs_config:
+    initial: 1e-8
+    max: 1e-3
+    end: 1e-8
+    pct_start: 0.1
+  model:
+    class_path: salt.models.JetTagger
+    init_args:
+      init_nets:
+        class_path: torch.nn.ModuleList
+        init_args:
+          modules:
+            - class_path: salt.models.InitNet
+              init_args:
+                name: track
+                net:
+                  class_path: salt.models.Dense
+                  init_args:
+                    input_size: 40
+                    output_size: &embed_dim 192
+                    hidden_layers: [256]
+                    activation: &activation SiLU
+                    norm_layer: &norm_layer LayerNorm
+            - class_path: salt.models.InitNet
+              init_args:
+                name: cell
+                net:
+                  class_path: salt.models.Dense
+                  init_args:
+                    input_size: 12
+                    output_size: *embed_dim
+                    hidden_layers: [256]
+                    activation: *activation
+                    norm_layer: *norm_layer
+
+      gnn:
+        class_path: salt.models.TransformerEncoder
+        init_args:
+          embed_dim: *embed_dim
+          num_layers: 6
+          out_dim: &out_dim 128
+          mha_config:
+            num_heads: 8
+            attention:
+              class_path: salt.models.ScaledDotProductAttention
+            out_proj: False
+          dense_config:
+            norm_layer: *norm_layer
+            activation: *activation
+            hidden_layers: [256]
+            dropout: &dropout 0.1
+
+      pool_net:
+        class_path: salt.models.GlobalAttentionPooling
+        init_args:
+          input_size: *out_dim
+
+      tasks:
+        class_path: torch.nn.ModuleList
+        init_args:
+          modules:
+            - class_path: salt.models.ClassificationTask
+              init_args:
+                name: jet_classification
+                label: flavour_label
+                input_type: jet
+                loss:
+                  class_path: torch.nn.CrossEntropyLoss
+                  init_args:
+                    weight: [1.0, 1.0]
+                    ignore_index: -1
+                net:
+                  class_path: salt.models.Dense
+                  init_args:
+                    input_size: *out_dim
+                    output_size: 2
+                    hidden_layers: [128, 64, 32]
+                    activation: *activation
+                    norm_layer: *norm_layer
+                    dropout: *dropout
+
+            - class_path: salt.models.ClassificationTask
+              init_args:
+                name: track_origin
+                label: NewTruthType
+                input_type: track
+                weight: 0.5
+                loss:
+                  class_path: torch.nn.CrossEntropyLoss
+                  # init_args:
+                  #   weight:
+                  #     [7.62, 104.91, 1.56, 20.65, 14.05, 14.06, 1.0, 36.07]
+                net:
+                  class_path: salt.models.Dense
+                  init_args:
+                    input_size: *out_dim
+                    context_size: *out_dim
+                    output_size: 7
+                    hidden_layers: [128, 64, 32]
+                    activation: *activation
+                    norm_layer: *norm_layer
+                    dropout: *dropout
+            # - class_path: salt.models.VertexingTask
+            #   init_args:
+            #     name: track_vertexing
+            #     label: tracks/labels/truthVertexIndex
+            #     weight: 1.5
+            #     loss:
+            #       class_path: torch.nn.BCEWithLogitsLoss
+            #       init_args:
+            #         reduction: none
+            #     net:
+            #       class_path: salt.models.Dense
+            #       init_args:
+            #         input_size: 256
+            #         context_size: *out_dim
+            #         hidden_layers: [128, 64, 32]
+            #         output_size: 1
+            #         activation: *activation

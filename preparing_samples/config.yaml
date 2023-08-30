@@ -1,0 +1,136 @@
+batch_size: 50000
+tree_name: 'CollectionTree'
+
+#input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364702.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ2WithSW_v3_output_v3_ntuple.root
+#input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364703.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ3WithSW_v3_output_v3_ntuple.root
+#input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364704.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ4WithSW_v3_output_v3_ntuple.root
+#input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364705.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ5WithSW_v3_output_v3_ntuple.root
+#input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364706.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ6WithSW_v3_output_v3_ntuple.root
+#input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364707.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ7WithSW_v3_output_v3_ntuple.root
+#input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364708.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ8WithSW_v3_output_v3_ntuple.root
+input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root
+
+#input_file: '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.425200.Pythia8EvtGen_A14NNPDF23LO_Gammatautau_MassWeight_v3_output_v3_ntuple.root/user.ntamir.32022749._000002.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.425200.Pythia8EvtGen_A14NNPDF23LO_Gammatautau_MassWeight_v3_output_v3_ntuple.root/user.ntamir.32022749._000003.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.425200.Pythia8EvtGen_A14NNPDF23LO_Gammatautau_MassWeight_v3_output_v3_ntuple.root/user.ntamir.32022749._000004.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000001.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000002.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000003.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000004.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000005.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000006.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000007.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000008.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._000009.ntuple.root'
+  # - '/storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.800036.Py8EG_A14N23LO_jetjet_JZ1WwithSW_v3_output_v3_ntuple.root/user.ntamir.32022750._0000010.ntuple.root'
+
+output:
+  output_name: 'output_JZ1.h5'
+  n_jets: 35e6
+  max_tracks: 30
+  max_cells: 20
+  shuffle_array: False
+
+
+variables:
+  jet_variables:
+    - "TAU_centFrac"
+    - "TAU_sumEMCellEtOverLeadTrkPt"
+    - "TAU_dRmax"
+    - "TAU_trFlightPathSig"
+    - "TAU_etOverPtLeadTrk"
+    - "TAU_ptRatioEflowApprox"
+    - "TAU_mEflowApprox"
+    - "TAU_massTrkSys"
+    - "TAU_SumPtTrkFrac"
+    - "TAU_EMPOverTrkSysP"
+    - "TAU_isolFrac"
+    - "TAU_RNNJetScore"
+    - "TAU_RNNJetScoreSigTrans"
+  track_variables:
+    - "beamSpotWeight"
+    - "TruthType"
+    - "NewTruthType"
+    - "truthJetType"
+    - "z0sinthetaSigTJVA"
+    - "z0sinthetaTJVA"
+    - "d0SigTJVA"
+    - "d0TJVA"
+    - "z0TJVA"
+    - "dz0_TV_PV0"
+    - "log_sumpt_TV"
+    - "log_sumpt2_TV"
+    - "log_sumpt_PV0"
+    - "log_sumpt2_PV0"
+    - "isLRT"
+    - "jetSeedPt"
+    - "jetSeedEta"
+    - "jetSeedPhi"
+    - "tauPt"
+    - "tauEta"
+    - "tauPhi"
+    - "dEtaJetSeedAxis"
+    - "dPhiJetSeedAxis"
+    - "dRJetSeedAxis"
+    - "tauPtIntermediateAxis"
+    - "dRIntermediateAxis"
+    - "tauPtDetectorAxis"
+    - "dRDetectorAxis"
+    - "rConv"
+    - "rConvII"
+    - "charge"
+    - "tauTruthCharge"
+    - "tauTruthProng"
+    - "tauTruthDecayMode"
+    - "truthParticleOrigin"
+    - "truthParticleType"
+    - "trackPt"
+    - "trackEta"
+    - "trackPhi"
+    - "truthE"
+    - "numberOfInnermostPixelLayerHits"
+    - "numberOfPixelHits"
+    - "numberOfPixelSharedHits"
+    - "numberOfPixelDeadSensors"
+    - "numberOfSCTHits"
+    - "numberOfSCTSharedHits"
+    - "numberOfSCTDeadSensors"
+    - "numberOfTRTHighThresholdHits"
+    - "numberOfTRTHits"
+    - "nPixHits"
+    - "nSCTHits"
+    - "nSiHits"
+    - "nIBLHitsAndExp"
+    - "expectInnermostPixelLayerHit"
+    - "expectNextToInnermostPixelLayerHit"
+    - "numberOfContribPixelLayers"
+    - "numberOfPixelHoles"
+    - "numberOfSCTHoles"
+    - "d0_old"
+    - "qOverP"
+    - "theta"
+    - "rnn_chargedScore"
+    - 'rnn_isolationScore'
+    - 'rnn_conversionScore'
+    - 'rnn_fakeScore'
+    # - "eProbabilityHT"
+    # - "eProbabilityNNorHT"
+    # - "eProbabilityHT_offl"
+    # - "eProbabilityNN_offl"
+    # - "eProbabilityNNorHT_offl"
+    - "rnn_chargedScore"
+    - "rnn_isolationScore"
+    - "rnn_conversionScore"
+    - "rnn_fakeScore"
+  cell_variables:
+    - "TAU_cls_e"
+    - "TAU_cls_et"
+    - "TAU_cls_dPhi"
+    - "TAU_cls_dEta"
+    - "TAU_cls_SECOND_R"
+    - "TAU_cls_SECOND_LAMBDA"
+    - "TAU_cls_FIRST_ENG_DENS"
+    - "TAU_cls_EM_PROBABILITY"
+    - "TAU_cls_CENTER_MAG"
+    - "TAU_cls_CENTER_LAMBDA"
+
