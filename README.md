@@ -15,8 +15,7 @@ python converter.py -c config.yaml
 ```
 *the output file format will be output_JZ_?_.h5 - notice the second point on things you might need to modify*
 
-converter.py path - /storage/agrp/zivka/TauGN1/tau_sampels/converter.py  
-config.ymal path - /storage/agrp/zivka/TauGN1/tau_sampels/config.yaml  
+converter.py, config.ymal - under the folder preparing_samples
 
 Things you might need to modify:
 1. the path of the different jetjet samples folders
@@ -30,8 +29,7 @@ Things you might need to modify:
 ```
 python merge_ds.py -c merging.yaml
 ```
-merge_ds.py path - /storage/agrp/zivka/TauGN1/tau_sampels/merge/merge_ds.py  
-merging.yaml path - /storage/agrp/zivka/TauGN1/tau_sampels/merge/merging.yaml
+merge_ds.py, merging.yaml - under the folder preparing_samples
 
 
 Things you might need to modify:
@@ -44,7 +42,7 @@ Things you might need to modify:
 ```
 python label.py
 ```
-label.py - /storage/agrp/zivka/TauGN1/tau_sampels/label.py   
+label.py - under the folder preparing_samples
 
 Things you might need to modify:
 1. line 173: datasets, you can choose between jet/tau samples.
@@ -59,15 +57,14 @@ Things you might need to modify:
 You can use the UPP tutorial: https://github.com/umami-hep/umami-preprocessing  
 **Please** add these 2 files to the folder:
 
-/storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/configs/tau-variables.yaml  
-/storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/configs/tau.yaml  
+tau-variables.yaml, tau.yaml - under the folder umami
 
 Things that are not written and important to mention:  
 1. notice that you activate UPP
 2. you should have a ntuples folder that should be seperated as follows:
 * ntuples
     * qcd - contains jetjet samples after labeling
-    * tau - containing tautau samples after labeling 
+    * tau - contains tautau samples after labeling 
 3. to create all train, val, and test files together you should run the following:
 ```
 preprocess --config configs/tau.yaml --split all
@@ -78,7 +75,7 @@ preprocess --config configs/tau.yaml --split all
 
 training is done by salt, the tutorial can be found in this folder under tutorial-salt
 
-*Do only once - Replace your predictionwriter.py with this file /storage/agrp/dmitrykl/salt/run/tau/predictionwriter.py*
+*Do only once - Replace your predictionwriter.py with the file predictionwriter.py - under the folder salt*
 
 1. You might need to run all or some of the following, you will see it the the tutorial :
 * screen / submit a job
@@ -90,11 +87,7 @@ salt fit -c GN2TauA.yaml --force
 ```
 *A* stands for all, you can modify the config file as you wish  
 
-GN2TauA.yaml path - /storage/agrp/zivka/salt/run/tau/GN2TauA.yaml  
-GNTau.ymal path - /storage/agrp/zivka/salt/run/tau/GN2Tau.yaml  
-GNTauJ.ymal path - /storage/agrp/zivka/salt/run/tau/GN2TauJ.yaml  
-GNTauC.ymal path - /storage/agrp/zivka/salt/run/tau/GN2TauC.yaml
-
+GN2TauA.yaml, GNTau.ymal, GNTauJ.ymal, GNTauC.ymal - under the folder salt
 
 Things you might need to modify:
 1. train, val, test, norm_dict, class_dict paths - to the output files of UPP
@@ -121,10 +114,10 @@ data.test_file file:  can be the path path of the test_file that was used during
 
 **1.** ROC and the eff/rej plots
 You should copy the notebook to your directory and play with the parameters:
-/storage/agrp/zivka/salt/run/tau/clean_plot_tau_ziv.ipynb
+clean_plot_tau_ziv.ipynb - under the folder notebooks
 
 this is the old one, it contains more things that are not really needed to create the ROC plots, but if necessary you can also take a look into this one: 
- /storage/agrp/zivka/salt/run/tau/plot_tau_ziv.ipynb
+plot_tau_ziv.ipynb - under the folder notebooks
 
 Things you might need to modify:
 1. test_file should be the exact file you evaluated on
@@ -132,12 +125,13 @@ Things you might need to modify:
 3. at the last part of the eff/rej plots, you can modify the network, now it checks only RNN 
 
 **2.** CM
-1. RNN - /storage/agrp/zivka/salt/run/tau/confusion_matrix.ipynb
-2. GNTau - /storage/agrp/zivka/salt/run/tau/confusion_matrix_NOT_RNN.ipynb
+1. RNN - confusion_matrix.ipynb - under the folder notebooks
+2. GNTau - confusion_matrix_NOT_RNN.ipynb - under the folder notebooks
     * if we have the output of the aux task
 
 **3.** JZ slices 
-/storage/agrp/zivka/salt/run/tau/exploration.ipynb - you should use only the last part 
+exploration.ipynb - you should use only the last part, can be found under the folder notebooks
 
 **4.** Variables Plots
-If you wish to plot variable distributions you can take a look in this notebook and modify as necessary: /storage/agrp/zivka/salt/run/tau/compare_ntuples.ipynb
+If you wish to plot variable distributions you can take a look in this notebook and modify as necessary:
+compare_ntuples.ipynb - under the folder notebooks
