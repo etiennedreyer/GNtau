@@ -1,4 +1,4 @@
-batch_size: 50000
+batch_size: 10000
 tree_name: 'CollectionTree'
 
 #input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.364702.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ2WithSW_v3_output_v3_ntuple.root
@@ -26,7 +26,7 @@ input_folder: /storage/agrp/dreyet/GNtau/samples/v03/user.ntamir.GNsamps_ntup.80
 
 output:
   output_name: 'output_JZ1.h5'
-  n_jets: 35e6
+  n_jets: 100e7
   max_tracks: 30
   max_cells: 20
   shuffle_array: False
