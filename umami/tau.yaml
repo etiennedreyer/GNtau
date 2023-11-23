@@ -1,20 +1,20 @@
-variables: !include tau-variables.yaml
+variables: !include /storage/agrp/dreyet/GNtau/GNtau/umami/tau-variables.yaml
 
 qcd: &qcd
   name: qcd
-  pattern: "qcd/jet_*.h5"
+  pattern: "qcd/jet_samp*.h5"
 
 tau: &tau
   name: tau
-  pattern: "tau/tau_*.h5"
+  pattern: "tau/tau_samp*.h5"
 
 global_cuts:
   train:
-    - [eventNumber, "%10<=", 7]
+    - [eventNumber, "%10<=", 6]
   val:
-    - [eventNumber, "%10==", 8]
+    - [eventNumber, "%10==", 7]
   test:
-    - [eventNumber, "%10==", 9]
+    - [eventNumber, "%10>=", 7]
 
 lowpt: &lowpt
   name: lowpt
@@ -29,16 +29,18 @@ components:
     sample:
       <<: *qcd
     flavours: [ujets]
-    num_jets: 7_400_000
-    num_jets_test: 900_000
+    num_jets: 48_000_000
+    # num_jets_val: 7_400_000
+    num_jets_test: 14_400_000
 
   - region:
       <<: *lowpt
     sample:
       <<: *tau
     flavours: [bjets]
-    num_jets: 7_400_000
-    num_jets_test: 900_000
+    num_jets: 10_000_000
+    # num_jets_val: 1_600_000
+    num_jets_test: 3_000_000
 
 resampling:
   target: bjets
@@ -53,7 +55,7 @@ resampling:
 # note: sensible defaults are defined in the PreprocessingConfig constructor
 global:
   jets_name: jets
-  batch_size: 2_000_000
-  num_jets_estimate: 4_000_000
-  base_dir: /storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/
+  batch_size: 5_000_000
+  num_jets_estimate: 5_000_000
+  base_dir: /storage/agrp/dreyet/GNtau/samples/v04/
   merge_test_samples: True

@@ -1,44 +1,46 @@
-output_filename: test_35M
-total_size: 40e6
+output_filename: test_XM
+total_size: 134900000
 tracks_name: tracks
 cells_name: cells
 
-# JZ1W: 2.6%
-# JZ2W: 11.26%
-# JZ3W: 18.72%
-# JZ4W: 26.18%
-# JZ5W: 22.35%
-# JZ6W: 4.25%
-# JZ7W: 5.23%
-# JZ8W: 5.08%
-# JZ9W: 2.45%
+# JZ1W (801166): 2.6%
+# JZ2W (801167): 11.26%
+# JZ3W (801168): 18.72%
+# JZ4W (801169): 26.18%
+# JZ5W (801170): 22.35%
+# JZ6W (801171): 4.25%
+# JZ7W (801172): 5.23%
+# JZ8W (801173): 5.08%
+# JZ9W (------): 2.45%
 # JZ(10-12)W: 0.6% 
+
+# 0.005+0.10+0.085+0.22+0.26+0.19+0.11+0.03 = 1
 
 samples:
   JZ1W:
     fraction: 0.03
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ1.h5
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801166_v1_converted/
   JZ2W:
     fraction: 0.11
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ2.h5
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801167_v1_converted/
   JZ3W:
     fraction: 0.19
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ3.h5
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801168_v1_converted/
   JZ4W:
     fraction: 0.26
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ4.h5
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801169_v1_converted/
   JZ5W:
-    fraction: 0.03
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ5.h5
+    fraction: 0.22
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801170_v1_converted/
   JZ6W:
-    fraction: 0.12
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ6.h5
+    fraction: 0.085
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801171_v1_converted/
   JZ7W:
-    fraction: 0.12
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ7.h5
+    fraction: 0.10
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801172_v1_converted/
   JZ8W:
-    fraction: 0.14
-    file_path: /storage/agrp/zivka/TauGN1/tau_sampels/35M_sliced/output_JZ8.h5
+    fraction: 0.005
+    file_path: /storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Dijet_MC21.GNTau_MxAOD_Dijet_MC21_slim.801173_v1_converted/
   # VHbb:
   #   fraction: 0.25
   #   file_path: /storage/agrp/dmitrykl/xbb/umami/ftag_xbb/merging/user.dkobylia.801471.e8441_s3681_r13144_p5488.tdd.FatJets.22_2_100.23-01-12_test-xbb_output.h5/

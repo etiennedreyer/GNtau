@@ -52,8 +52,8 @@ class MergeSamples():
         samples_files = {}
         num_batches = {}
         for key, value in self.samples.items():
-            # files = glob.glob(value['file_path'] + '*h5')
-            files = [value['file_path']]
+            files = glob.glob(value['file_path'] + '*h5')
+            # files = [value['file_path']]
             samples_files[key] = [self.GetBatchesPerFile(file, len(self.batch_sizes[key])) for file in files]
             num_batches[key] = num_batches.get(key, 0) + sum([len(el[1]) for el in samples_files[key]])
         return samples_files, num_batches

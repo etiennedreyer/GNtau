@@ -2,6 +2,7 @@ import argparse
 
 import uproot
 import h5py
+import os
 import glob
 import yaml
 import numpy as np
@@ -27,6 +28,33 @@ def get_parser():
         help="Enter the name of the config file to convert the sample.",
     )
 
+    parser.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        required=False,
+        default=None,
+        help="Enter the name of the input file or folder to overwrite the one specified in the config file.",
+    )
+
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        required=False,
+        default=None,
+        help="Enter the name of the output file to overwrite the one specified in the config file.",
+    )
+
+    parser.add_argument(
+        "-n",
+        "--njets",
+        type=int,
+        required=False,
+        default=None,
+        help="Enter the number of jets to be processed.",
+    )
+
     return parser.parse_args()
 
 
@@ -41,7 +69,7 @@ class PrepareSamples:
     the preprocessing config.
     """
 
-    def __init__(self, config) -> None:
+    def __init__(self, config, args) -> None:
         """Preparation of h5 samples.
 
         Parameters
@@ -52,8 +80,11 @@ class PrepareSamples:
             preprocessing configuration class containing all info about preprocessing
         """
         self.config = config
-        self.__setup()
+        self.input  = args.input
+        self.output = args.output
+        self.n_jets = args.njets
         self.rnd_seed = 42
+        self.__setup()
 
     def __setup(self):
         """Setting up preparation class
@@ -74,13 +105,25 @@ class PrepareSamples:
         self.track_variables = self.config["variables"]["track_variables"]
         self.cell_variables = self.config["variables"]["cell_variables"]
         self.jet_variables = self.config["variables"]["jet_variables"]
-        self.input_files = glob.glob(self.config['input_folder'] + "/*.root")
+        if self.input is not None:
+            if os.path.isfile(self.input):
+                self.input_files = [self.input]
+            elif os.path.isdir(self.input):
+                self.input_files = glob.glob(self.input + "/*.root")
+            else:
+                raise ValueError("--input argument is neither file nor folder!")
+        else:
+            self.input_files = glob.glob(self.config['input_folder'] + "/*.root")
         self.tree_name = self.config.get("tree_name", "CollectionTree")
 
         # Output configs
         self.batchsize = self.config.get("batch_size", 100000)
-        self.output_name = self.config['output']['output_name']
-        self.n_jets = int(float(self.config['output']['n_jets']))
+        if self.input is not None:
+            self.output_name = self.output
+        else:
+            self.output_name = self.config['output']['output_name']
+        if self.n_jets is None:
+            self.n_jets = int(float(self.config['output']['n_jets']))
         self.max_tracks = self.config['output']['max_tracks']
         self.max_cells = self.config['output']['max_cells']
         self.shuffle_array = self.config['output']['shuffle_array']
@@ -109,6 +152,10 @@ class PrepareSamples:
         with uproot.open(filename) as rootfile:
             # get total number of jets in file
             total_n_jets = rootfile[self.tree_name].num_entries
+            if self.n_jets > total_n_jets or self.n_jets == -1:
+                self.n_jets = total_n_jets
+            else:
+                total_n_jets = self.n_jets
             # first tuple is given by (0, batch_size)
             start_batch = 0
             end_batch = self.batchsize
@@ -231,12 +278,15 @@ class PrepareSamples:
     def run(self):
         """Run over Ntuples to extract jets (and potentially also tracks)."""
 
-        pbar = tqdm(total=self.n_jets)
         # get list of batches for each file
         files_in_batches = map(
             self.get_batches_per_file,
             self.input_files,
         )
+
+        tot = self.n_jets
+        pbar = tqdm(total=self.n_jets)
+
         # loop over batches for all files and load the batches separately
         displayed_writing_output = True
         for jets, tracks, cells in self.jets_generator(files_in_batches):
@@ -246,6 +296,7 @@ class PrepareSamples:
             cells = self._convert_constituents(cells, self.max_cells)
             pbar.update(jets.size)
             self.jets_loaded += jets.size
+            print("{} / {} jets converted ({}%)".format(self.jets_loaded,tot,100*self.jets_loaded/tot))
             self.n_jets -= jets.size
 
             # print('Jets: ', len(jets), 'Tracks: ', len(tracks))
@@ -291,7 +342,7 @@ class PrepareSamples:
                         maxshape=(None, cells.shape[1]),
                     )
             else:
-                # appending to existing dataset
+                #appending to existing dataset
                 if displayed_writing_output:
                     pbar.write(f"Writing to output file: {self.output_name}")
                 with h5py.File(self.output_name, "a") as out_file:
@@ -322,5 +373,5 @@ if __name__ == "__main__":
     with open(args.config_file, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     
-    preparation_tool = PrepareSamples(config=config)
+    preparation_tool = PrepareSamples(config=config,args=args)
     preparation_tool.run()

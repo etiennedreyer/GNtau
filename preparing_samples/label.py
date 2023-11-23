@@ -4,7 +4,7 @@ import h5py
 import os, glob
 import tqdm
 
-def GetBatchesPerFile(filename: str, batch_size = 50000):
+def GetBatchesPerFile(filename: str, batch_size = 500000):
     """
     Split the file into batches to avoid that the loaded data is too large.
 
@@ -170,14 +170,39 @@ def labelDataset(jet_type, input_files, output_file, tracks_name='tracks', cells
             break
     pbar.close()
     
-datasets = {
-  'jet' : 'jet/',
-#   'tau' : 'tau/'
+
+tau_dataset = {
+    '/storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Gammatt_MC21.GNTau_MxAOD_Gammatautau_MC21_slim.801002_v1_converted/user.ntamir.34744426._000001.ntuple.h5': 5447081,
+    '/storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Gammatt_MC21.GNTau_MxAOD_Gammatautau_MC21_slim.801002_v1_converted/user.ntamir.34744426._000002.ntuple.h5': 969371,
+    '/storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Gammatt_MC21.GNTau_MxAOD_Gammatautau_MC21_slim.801002_v1_converted/user.ntamir.34744426._000003.ntuple.h5': 4846431,
+    '/storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Gammatt_MC21.GNTau_MxAOD_Gammatautau_MC21_slim.801002_v1_converted/user.ntamir.34744426._000004.ntuple.h5': 4106447,
+    '/storage/agrp/dreyet/GNtau/samples/v04/user.ntamir.GNsamps_ntup_slim_Gammatt_MC21.GNTau_MxAOD_Gammatautau_MC21_slim.801002_v1_converted/user.ntamir.34744426._000005.ntuple.h5': 969550,
 }
 
-total_jets = int(35e6)
-for key, value in datasets.items():
-    print(f'DATASET: {key}')
-    if key == 'tau':
-        total_jets = int(10e6)
-    labelDataset(key, glob.glob(value + '*h5'), f'{key}.h5', n_jets_to_get=total_jets, n_jets_per_file=int(6e6))
+jet_dataset = {
+    'test_partial/test_XM_1.h5': 5000000,
+    'test_partial/test_XM_2.h5': 5000000,
+    'test_partial/test_XM_3.h5': 5000000,
+    'test_partial/test_XM_4.h5': 5000000,
+    'test_partial/test_XM_5.h5': 5000000,
+    'test_partial/test_XM_6.h5': 5000000,
+    'test_partial/test_XM_7.h5': 5000000,
+    'test_partial/test_XM_8.h5': 5000000,
+    'test_partial/test_XM_9.h5': 5000000,
+    'test_partial/test_XM_10.h5': 5000000,
+    'test_partial/test_XM_11.h5': 5000000,
+    'test_partial/test_XM_12.h5': 5000000,
+    'test_partial/test_XM_13.h5': 5000000,
+    'test_partial/test_XM_14.h5': 5000000,
+}
+
+datasets = {
+    'tau' : tau_dataset,
+    'jet' : jet_dataset,
+}
+
+for samp, samp_files in datasets.items():
+
+    for i, (samp_file, n_jets) in enumerate(samp_files.items()):
+        print(f'DATASET: {samp_file}')
+        labelDataset(samp, [samp_file], f'{samp}_samp{i}.h5', n_jets_to_get=n_jets, n_jets_per_file=n_jets)
