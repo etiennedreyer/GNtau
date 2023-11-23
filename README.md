@@ -1,13 +1,12 @@
-# **GNTau Workflow**
+# **GNtau Workflow**
 
-## General Steps:
-1. entering the cluster (example: ssh zivka@192.114.102.138)
-2. source /usr/local/anaconda/3.8u/etc/profile.d/conda.sh 
-
+## Dependencies:
+- [Umami Preprocessing](https://github.com/umami-hep/umami-preprocessing)
+- [Salt](https://gitlab.cern.ch/atlas-flavor-tagging-tools/algorithms/salt)
+- [Puma](https://pypi.org/project/puma-hep/)
 
 ## Preparing the samples
 root --> h5 - In this step we would like to converte the filse from root to h5 format.
-
 
 **1.** converter: 
 ```
@@ -22,8 +21,9 @@ Things you might need to modify:
 2. the output file name (for each JZ slice)
 3. n_jets - in the config file
 
-*tautau samples are ready (R22 - after all stages), and can be found here:*  
-/storage/agrp/zivka/umami_Tau/UPP/umami-preprocessing/upp/ntuples/tau
+*Train, val, and test samples are ready (MC21 - after all stages), and can be found here:*  
+- `/storage/agrp/dreyet/GNtau/samples/v04/output/`
+- `/eos/user/e/edreyer/GNtau/samples/v04/output/`
 
 **2.** merging: 
 ```
@@ -52,9 +52,9 @@ Things you might need to modify:
 
 **Congrats!** now you have ready to go ntuples 
 
-## UPP - preprocessing 
+## Umami Pre Processing (UPP)
 
-You can use the UPP tutorial: https://github.com/umami-hep/umami-preprocessing  
+You can use the [UPP tutorial](https://github.com/umami-hep/umami-preprocessing)  
 **Please** add these 2 files to the folder:
 
 tau-variables.yaml, tau.yaml - under the folder umami
@@ -112,26 +112,21 @@ data.test_file file:  can be the path path of the test_file that was used during
 
 ## Output Plots
 
+Currently, all plots are made in notebooks:
+
 **1.** ROC and the eff/rej plots
-You should copy the notebook to your directory and play with the parameters:
-clean_plot_tau_ziv.ipynb - under the folder notebooks
 
-this is the old one, it contains more things that are not really needed to create the ROC plots, but if necessary you can also take a look into this one: 
-plot_tau_ziv.ipynb - under the folder notebooks
+- [notebooks/plot_tau_ziv.ipynb](notebooks/plot_tau_ziv.ipynb)
 
-Things you might need to modify:
-1. test_file should be the exact file you evaluated on
-2. modify the networks at the top of the notebook
-3. at the last part of the eff/rej plots, you can modify the network, now it checks only RNN 
+**2.** Confusion matrices for track classification
 
-**2.** CM
-1. RNN - confusion_matrix.ipynb - under the folder notebooks
-2. GNTau - confusion_matrix_NOT_RNN.ipynb - under the folder notebooks
-    * if we have the output of the aux task
+- RNN: [confusion_matrix.ipynb](confusion_matrix.ipynb)
+- GNTau: [confusion_matrix_NOT_RNN.ipynb](confusion_matrix_NOT_RNN.ipynb) (if we have the output of the aux task
 
-**3.** JZ slices 
-exploration.ipynb - you should use only the last part, can be found under the folder notebooks
+**3.** JZ slices
 
-**4.** Variables Plots
-If you wish to plot variable distributions you can take a look in this notebook and modify as necessary:
-compare_ntuples.ipynb - under the folder notebooks
+- [exploration.ipynb](exploration.ipynb)
+
+**4.** Variables distribution plots
+
+- [compare_ntuples.ipynb](compare_ntuples.ipynb)
